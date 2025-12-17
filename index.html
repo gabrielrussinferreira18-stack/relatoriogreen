@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>GreenRest | Leads Report</title>
+
+  <style>
+    :root{
+      --bg:#0b1220;
+      --card:#111c34;
+      --line:rgba(255,255,255,.10);
+      --text:#eaf0ff;
+      --muted:#aab7d6;
+      --accent:#39d98a;
+      --accent2:#4aa3ff;
+      --warn:#ffcc66;
+      --danger:#ff5c7a;
+      --shadow:0 18px 40px rgba(0,0,0,.35);
+      --r:18px;
+      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    }
+
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      font-family:var(--font);
+      color:var(--text);
+      background:
+        radial-gradient(1200px 700px at 20% -10%, rgba(57,217,138,.16), transparent 60%),
+        radial-gradient(900px 600px at 90% -10%, rgba(74,163,255,.14), transparent 55%),
+        linear-gradient(180deg, var(--bg), #070b14 70%);
+    }
+
+    .wrap{
+      max-width:980px;
+      margin:0 auto;
+      padding:26px 16px 56px;
+    }
+
+    /* TOP */
+    .top{
+      display:flex;
+      justify-content:space-between;
+      gap:20px;
+      flex-wrap:wrap;
+      align-items:center;
+      border:1px solid var(--line);
+      background:rgba(17,28,52,.55);
+      border-radius:var(--r);
+      padding:18px 20px;
+      box-shadow:var(--shadow);
+    }
+
+    .brand{
+      display:flex;
+      gap:18px;
+      align-items:center;
+    }
+
+    .logo img{
+      width:88px; /* 2x */
+      height:88px;
+      object-fit:contain;
+      display:block;
+    }
+
+    .title h1{
+      margin:0;
+      font-size:18px;
+    }
+
+    .title p{
+      margin:6px 0 0;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.4;
+    }
+
+    .pill{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(11,18,32,.55);
+      color:var(--muted);
+      font-size:12px;
+      white-space:nowrap;
+    }
+
+    .dot{
+      width:8px;height:8px;border-radius:999px;background:var(--accent);
+    }
+
+    /* HERO */
+    .hero{
+      margin-top:18px;
+      padding:22px;
+      border-radius:var(--r);
+      border:1px solid var(--line);
+      background:rgba(17,28,52,.45);
+      box-shadow:var(--shadow);
+      display:flex;
+      gap:24px;
+      align-items:center;
+    }
+
+    .hero-image{ flex:0 0 38%; }
+    .hero-image img{
+      width:100%;
+      height:auto;
+      border-radius:16px;
+      border:1px solid var(--line);
+      display:block;
+    }
+
+    .hero-text{ flex:1; }
+    .hero-text h2{ margin:0 0 10px; font-size:20px; }
+    .hero-text p{ margin:0; color:var(--muted); line-height:1.6; font-size:13px; }
+
+    /* GRID / KPIS */
+    .grid{ display:grid; gap:12px; margin-top:16px; }
+
+    .kpis{ grid-template-columns:repeat(3,minmax(0,1fr)); }
+
+    .card{
+      border:1px solid var(--line);
+      background:rgba(17,28,52,.45);
+      border-radius:var(--r);
+      padding:14px;
+      box-shadow:var(--shadow);
+    }
+
+    .card h3{
+      margin:0 0 10px;
+      font-size:12px;
+      color:var(--muted);
+      text-transform:uppercase;
+      letter-spacing:.3px;
+    }
+
+    .val{ font-size:26px; font-weight:800; }
+    .sub{ margin-top:6px; color:var(--muted); font-size:12px; line-height:1.45; }
+
+    /* TABLE */
+    table{
+      width:100%;
+      border-collapse:separate;
+      border-spacing:0;
+      border:1px solid var(--line);
+      border-radius:16px;
+      overflow:hidden;
+      background:rgba(11,18,32,.35);
+      margin-top:18px;
+    }
+
+    th, td{
+      padding:12px;
+      border-bottom:1px solid var(--line);
+      font-size:12px;
+      text-align:left;
+    }
+
+    th{ background:rgba(17,28,52,.55); color:var(--text); }
+    td{ color:var(--muted); }
+    tr:last-child td{ border-bottom:none; }
+
+    /* GROWTH BARS */
+    .growth{
+      margin-top:18px;
+      padding:16px;
+      border-radius:var(--r);
+      border:1px solid var(--line);
+      background:rgba(17,28,52,.45);
+      box-shadow:var(--shadow);
+    }
+
+    .growth-head{
+      display:flex; align-items:flex-end; justify-content:space-between; gap:12px; flex-wrap:wrap;
+      margin-bottom:12px;
+    }
+
+    .growth-head h3{ margin:0; font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.3px; }
+    .growth-head .hint{ color:var(--muted); font-size:12px; }
+
+    .barlist{ display:grid; gap:10px; margin-top:6px; }
+
+    .barrow{
+      display:grid;
+      grid-template-columns: 150px 1fr 160px;
+      gap:12px;
+      align-items:center;
+    }
+
+    .barrow .lbl{
+      color:var(--muted);
+      font-size:12px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .track{
+      height:12px;
+      border-radius:999px;
+      background:rgba(255,255,255,.08);
+      border:1px solid var(--line);
+      overflow:hidden;
+    }
+
+    .fill{
+      height:100%;
+      border-radius:999px;
+      background: linear-gradient(90deg, rgba(57,217,138,.95), rgba(74,163,255,.95));
+      width:50%;
+    }
+
+    .meta{
+      display:flex;
+      justify-content:flex-end;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    .metric{
+      color:var(--text);
+      font-size:12px;
+      font-weight:700;
+    }
+
+    .badge{
+      font-size:12px;
+      padding:5px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(11,18,32,.55);
+      color:var(--muted);
+      white-space:nowrap;
+    }
+
+    .badge.up{ color: var(--accent); }
+    .badge.mid{ color: var(--warn); }
+
+    .insights{
+      margin-top:14px;
+      padding:12px 14px;
+      border-radius:14px;
+      border:1px solid rgba(57,217,138,.22);
+      background: rgba(57,217,138,.07);
+      color: var(--text);
+      line-height:1.6;
+      font-size:12.5px;
+    }
+
+    @media(max-width:900px){
+      .kpis{ grid-template-columns:1fr; }
+      .hero{ flex-direction:column; }
+      .hero-image{ flex:0 0 auto; width:100%; }
+      .barrow{ grid-template-columns: 120px 1fr; }
+      .meta{ justify-content:flex-start; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <!-- TOP -->
+    <div class="top">
+      <div class="brand">
+        <div class="logo">
+          <img src="logogreen.png" alt="Green Rest Logo">
+        </div>
+        <div class="title">
+          <h1>GreenRest — Leads Report</h1>
+          <p>Simple performance report focused on lead generation and Instagram growth signals.</p>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <div class="pill"><span class="dot"></span> Period: <b>__ADD DATES__</b></div>
+        <div class="pill">Channel: <b>Ads</b></div>
+      </div>
+    </div>
+
+    <!-- HERO -->
+    <div class="hero">
+      <div class="hero-image">
+        <img src="foto colchão.png" alt="Green Rest Mattress">
+      </div>
+
+      <div class="hero-text">
+        <h2>Campaign Overview</h2>
+        <p>
+          This report summarizes lead generation results and the Instagram growth indicators
+          observed in the same period. The campaign focused on capturing qualified leads while
+          increasing visibility, reach and profile actions.
+        </p>
+      </div>
+    </div>
+
+    <!-- KPIS -->
+    <div class="grid kpis">
+      <div class="card">
+        <h3>Total Leads</h3>
+        <div class="val">27</div>
+        <div class="sub">Captured leads</div>
+      </div>
+
+      <div class="card">
+        <h3>Total Spend</h3>
+        <div class="val">$256.71</div>
+        <div class="sub">Ad investment</div>
+      </div>
+
+      <div class="card">
+        <h3>Cost per Lead</h3>
+        <div class="val">$9.51</div>
+        <div class="sub">Average CPL</div>
+      </div>
+
+      <div class="card">
+        <h3>Impressions</h3>
+        <div class="val">5,996</div>
+        <div class="sub">Total views</div>
+      </div>
+
+      <div class="card">
+        <h3>Reach</h3>
+        <div class="val">3,105</div>
+        <div class="sub">Unique users</div>
+      </div>
+
+      <div class="card">
+        <h3>Link Clicks</h3>
+        <div class="val">65</div>
+        <div class="sub">“Learn More” clicks</div>
+      </div>
+    </div>
+
+    <!-- TABLE -->
+    <table>
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th>Result</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Total Leads</td><td>27</td></tr>
+        <tr><td>Total Spend</td><td>$256.71</td></tr>
+        <tr><td>Cost per Lead</td><td>$9.51</td></tr>
+        <tr><td>Impressions</td><td>5,996</td></tr>
+        <tr><td>Reach</td><td>3,105</td></tr>
+        <tr><td>Link Clicks</td><td>65</td></tr>
+        <tr><td>Cost per Action</td><td>$3.95</td></tr>
+        <tr><td>CTR</td><td>2.25%</td></tr>
+        <tr><td>Link Retention</td><td>1.26%</td></tr>
+      </tbody>
+    </table>
+
+    <!-- INSTAGRAM GROWTH BARS -->
+    <div class="growth">
+      <div class="growth-head">
+        <h3>Instagram Growth (Meta Ads Report)</h3>
+        <div class="hint">Bars represent growth vs. previous period (capped at 100%).</div>
+      </div>
+
+      <div class="barlist">
+
+        <div class="barrow">
+          <div class="lbl">Views</div>
+          <div class="track"><div class="fill" style="width:71%"></div></div>
+          <div class="meta">
+            <span class="metric">8.8K</span>
+            <span class="badge up">+70.9%</span>
+          </div>
+        </div>
+
+        <div class="barrow">
+          <div class="lbl">Reach</div>
+          <div class="track"><div class="fill" style="width:100%"></div></div>
+          <div class="meta">
+            <span class="metric">2.6K</span>
+            <span class="badge up">+1.3K%</span>
+          </div>
+        </div>
+
+        <div class="barrow">
+          <div class="lbl">Content Interactions</div>
+          <div class="track"><div class="fill" style="width:100%"></div></div>
+          <div class="meta">
+            <span class="metric">174</span>
+            <span class="badge up">+1.4K%</span>
+          </div>
+        </div>
+
+        <div class="barrow">
+          <div class="lbl">Link Clicks</div>
+          <div class="track"><div class="fill" style="width:100%"></div></div>
+          <div class="meta">
+            <span class="metric">49</span>
+            <span class="badge up">+100%</span>
+          </div>
+        </div>
+
+        <div class="barrow">
+          <div class="lbl">Profile Visits</div>
+          <div class="track"><div class="fill" style="width:59%"></div></div>
+          <div class="meta">
+            <span class="metric">148</span>
+            <span class="badge up">+59.1%</span>
+          </div>
+        </div>
+
+        <div class="barrow">
+          <div class="lbl">Followers</div>
+          <div class="track"><div class="fill" style="width:26%"></div></div>
+          <div class="meta">
+            <span class="metric">+24</span>
+            <span class="badge up">+26.3%</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="insights">
+        <b>Growth Summary & Projection:</b><br>
+        The Instagram account showed clear momentum across the funnel: strong increases in
+        <b>views</b> and especially <b>reach</b>, followed by meaningful growth in <b>interactions</b>,
+        <b>profile visits</b> and <b>link clicks</b>. This indicates that the campaign is not only
+        generating visibility, but also driving action and intent.<br><br>
+
+        <b>Projection:</b> If we keep the same creative consistency and maintain optimization,
+        we expect continued growth in reach and engagement, with a higher volume of profile actions
+        converting into leads. The fastest path to scale is to (1) test new creatives per audience
+        (athletes, seniors, pain relief), (2) strengthen the CTA and form flow to improve click-to-lead conversion,
+        and (3) remarket to visitors and clickers to increase lead capture without raising costs proportionally.
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>
